@@ -1,13 +1,30 @@
 package handlers
 
+import (
+	"context"
+	"database/sql"
+	"net/http"
+)
+
+type ExtraArgs struct {
+	Db  *sql.DB
+	Tx  *sql.Tx
+	Ctx context.Context
+	W   http.ResponseWriter
+}
+
+func CreateExtraArgs(db *sql.DB, ctx context.Context, w http.ResponseWriter) ExtraArgs {
+	return ExtraArgs{
+		Db: db, Ctx: ctx, W: w}
+}
+
 type AlbumnReturn struct {
 	id             string
+	name           string
 	Main_author    AuthorReturn
 	Extra_Authors  []AuthorReturn
 	cover_filename string
 	songs          []SongReturn
-	tags           []string
-	genres         []string
 }
 
 type AuthorReturn struct {
@@ -34,6 +51,4 @@ type SongReturn struct {
 	albumn_id      string
 	file_name      string
 	cover_filename string
-	tags           []string
-	genres         []string
 }
